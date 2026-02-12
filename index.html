@@ -5,7 +5,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CVEEEZ | سيرتك الذاتية.. مفتاح مستقبلك</title>
+    <!-- Tailwind CDN with config to reduce warnings if possible -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#a855f7',
+              secondary: '#3b82f6',
+            }
+          }
+        }
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -13,9 +26,7 @@
       body {
         font-family: 'Cairo', sans-serif;
         overflow-x: hidden;
-        scroll-behavior: smooth;
         margin: 0;
-        padding: 0;
         background-color: #030712;
       }
       .glass {
@@ -38,6 +49,9 @@
         color: white;
         flex-direction: column;
         gap: 20px;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
       }
       .spinner {
         width: 40px;
@@ -47,9 +61,7 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
     <script type="importmap">
 {
@@ -69,10 +81,10 @@
   </head>
   <body class="bg-[#030712] text-slate-200">
     <div id="root">
-      <div class="loading-screen">
+      <div class="loading-screen" id="initial-loader">
         <div class="spinner"></div>
         <div style="font-weight: bold; letter-spacing: 2px;">CVEEEZ</div>
-        <div style="font-size: 14px; color: #64748b;">جاري تجهيز التجربة...</div>
+        <div style="font-size: 14px; color: #64748b;">جاري التحميل...</div>
       </div>
     </div>
   </body>

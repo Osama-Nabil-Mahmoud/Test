@@ -14,3 +14,12 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+// إزالة اللودر بمجرد أن يبدأ React في العمل
+const loader = document.getElementById('initial-loader');
+if (loader) {
+  setTimeout(() => {
+    loader.style.opacity = '0';
+    setTimeout(() => loader.remove(), 500);
+  }, 1000);
+}
