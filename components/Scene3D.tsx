@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, MeshDistortMaterial, Sphere, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
@@ -48,11 +48,13 @@ const AnimatedShapes = () => {
 
 const Scene3D: React.FC = () => {
   return (
-    <div className="absolute inset-0 z-0 opacity-40 md:opacity-100">
-      <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 0, 5]} />
-        <AnimatedShapes />
-      </Canvas>
+    <div className="absolute inset-0 z-0 opacity-40 md:opacity-100 pointer-events-none">
+      <Suspense fallback={null}>
+        <Canvas>
+          <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+          <AnimatedShapes />
+        </Canvas>
+      </Suspense>
     </div>
   );
 };

@@ -14,6 +14,9 @@
         font-family: 'Cairo', sans-serif;
         overflow-x: hidden;
         scroll-behavior: smooth;
+        margin: 0;
+        padding: 0;
+        background-color: #030712;
       }
       .glass {
         background: rgba(255, 255, 255, 0.03);
@@ -31,19 +34,21 @@
                     radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.15), transparent);
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "@react-three/fiber": "https://esm.sh/@react-three/fiber@^9.5.0",
-    "@react-three/drei": "https://esm.sh/@react-three/drei@^10.7.7",
-    "three": "https://esm.sh/three@^0.182.0"
-  }
-}
-</script>
-</head>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@19.0.0",
+        "react/": "https://esm.sh/react@19.0.0/",
+        "react-dom": "https://esm.sh/react-dom@19.0.0",
+        "react-dom/": "https://esm.sh/react-dom@19.0.0/",
+        "three": "https://esm.sh/three@0.173.0",
+        "three/": "https://esm.sh/three@0.173.0/",
+        "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.0.0?external=three,react,react-dom",
+        "@react-three/drei": "https://esm.sh/@react-three/drei@10.0.0?external=three,react,react-dom,@react-three/fiber"
+      }
+    }
+    </script>
+  </head>
   <body class="bg-[#030712] text-slate-200">
     <div id="root"></div>
   </body>
