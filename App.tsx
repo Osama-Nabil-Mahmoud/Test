@@ -1,10 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
-import Scene3D from './components/Scene3D';
-import { FEATURES, PRICING_PLANS, TESTIMONIALS, FAQ_ITEMS } from './constants';
+import React, { useState, useEffect, Suspense } from 'react';
+import Scene3D from './components/Scene3D.tsx';
+import { FEATURES, PRICING_PLANS, TESTIMONIALS, FAQ_ITEMS } from './constants.tsx';
 
 const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -13,7 +14,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen gradient-bg selection:bg-purple-500/30">
+    <div className="min-h-screen bg-[#030712] text-slate-200 selection:bg-purple-500/30">
       {/* Header */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'glass py-4' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
@@ -31,10 +32,13 @@ const App: React.FC = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20">
-        <Scene3D />
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 to-blue-900/10" />}>
+          {!hasError && <Scene3D onError={() => setHasError(true)} />}
+        </Suspense>
+        
         <div className="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in text-center md:text-right">
+          <div className="space-y-8 text-center md:text-right">
             <h1 className="text-5xl md:text-7xl font-black leading-tight">
               سيرتك الذاتية هي <br />
               <span className="gradient-text">بوابتك للوظيفة</span> <br />
@@ -70,20 +74,20 @@ const App: React.FC = () => {
       </section>
 
       {/* Trust Bar */}
-      <div className="border-y border-white/5 bg-white/2 py-12">
+      <div className="border-y border-white/5 bg-white/2 py-12 relative z-10">
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-8 md:gap-24 opacity-60">
             <div className="flex items-center gap-3">
               <span className="text-2xl">✨</span>
-              <span className="font-bold">ATS-friendly</span>
+              <span className="font-bold uppercase tracking-wider text-xs">ATS-friendly</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-2xl">⚡</span>
-              <span className="font-bold">AI-assisted</span>
+              <span className="font-bold uppercase tracking-wider text-xs">AI-assisted</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-2xl">👤</span>
-              <span className="font-bold">Human-reviewed</span>
+              <span className="font-bold uppercase tracking-wider text-xs">Human-reviewed</span>
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12 text-center">
@@ -107,8 +111,8 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Problem → Solution */}
-      <section id="features" className="py-24 container mx-auto px-6">
+      {/* Problem Section */}
+      <section id="features" className="py-24 container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-16">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-5xl font-black">ليه الـ CV بتاعك بيترفض؟</h2>
@@ -118,32 +122,32 @@ const App: React.FC = () => {
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 text-right">
-            <div className="glass p-8 rounded-3xl space-y-4 border-red-500/20">
+            <div className="glass p-8 rounded-3xl space-y-4 border-red-500/10">
               <div className="text-3xl">❌</div>
               <h3 className="text-xl font-bold text-red-400">المشكلة</h3>
-              <ul className="space-y-2 text-slate-400 text-sm">
-                <li>• كلمات مفتاحية مفقودة</li>
-                <li>• إنجازات مش واضحة</li>
-                <li>• تنسيق معقد يصعب قراءته</li>
-                <li>• كلام كتير ملهوش لازمة</li>
+              <ul className="space-y-3 text-slate-400 text-sm">
+                <li>• كلمات مفتاحية مفقودة تماماً</li>
+                <li>• إنجازات مش واضحة أو غير قابلة للقياس</li>
+                <li>• تنسيق معقد يصعب على البرامج قراءته</li>
+                <li>• حشو كلام كتير ملوش علاقة بالوظيفة</li>
               </ul>
             </div>
-            <div className="glass p-8 rounded-3xl space-y-4 border-green-500/20">
+            <div className="glass p-8 rounded-3xl space-y-4 border-green-500/10">
               <div className="text-3xl">✅</div>
               <h3 className="text-xl font-bold text-green-400">الحل مع CVEEEZ</h3>
-              <ul className="space-y-2 text-slate-400 text-sm">
-                <li>• تحسين الكلمات المفتاحية بذكاء</li>
-                <li>• صياغة إنجازات قابلة للقياس</li>
-                <li>• هيكلة واضحة ومباشرة</li>
-                <li>• توافق تام مع كافة الأنظمة</li>
+              <ul className="space-y-3 text-slate-400 text-sm">
+                <li>• تحسين الكلمات المفتاحية بذكاء بناءً على الوصف</li>
+                <li>• صياغة إنجازات قوية باستخدام معادلة XYZ</li>
+                <li>• هيكلة واضحة ومباشرة تلفت نظر الـ HR</li>
+                <li>• توافق تام مع كافة الأنظمة العالمية</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24 bg-white/[0.01]">
+      {/* Features */}
+      <section className="py-24 bg-white/[0.01] relative z-10">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-3xl md:text-4xl font-black">مميزات تخليك في المقدمة</h2>
@@ -151,7 +155,7 @@ const App: React.FC = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {FEATURES.map((feature) => (
-              <div key={feature.id} className="glass p-8 rounded-3xl hover:bg-white/5 transition-all group">
+              <div key={feature.id} className="glass p-8 rounded-3xl hover:bg-white/5 transition-all group border-white/5">
                 <div className="text-4xl mb-6 group-hover:scale-110 transition-transform inline-block">{feature.icon}</div>
                 <h3 className="text-xl font-bold mb-4">{feature.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{feature.description}</p>
@@ -161,64 +165,37 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24 container mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-black mb-16">ازاي بنبدأ؟ (3 خطوات بسيطة)</h2>
-        <div className="grid md:grid-cols-3 gap-12 relative">
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500/20 to-transparent -translate-y-1/2 z-0"></div>
-          
-          <div className="relative z-10 space-y-6">
-            <div className="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-purple-900/40">1</div>
-            <h3 className="text-xl font-bold">ارفع بياناتك</h3>
-            <p className="text-slate-400 text-sm px-4">ارفع الـ CV القديم أو املا بيانات خبراتك الأساسية في دقايق.</p>
-          </div>
-          
-          <div className="relative z-10 space-y-6">
-            <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-blue-900/40">2</div>
-            <h3 className="text-xl font-bold">اختار هدفك</h3>
-            <p className="text-slate-400 text-sm px-4">حدد الوظيفة اللي بتطمح ليها عشان نخصص الـ CV للكلمات اللي بتدور عليها.</p>
-          </div>
-          
-          <div className="relative z-10 space-y-6">
-            <div className="w-16 h-16 bg-pink-600 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-pink-900/40">3</div>
-            <h3 className="text-xl font-bold">استلم ونافس</h3>
-            <p className="text-slate-400 text-sm px-4">استلم سيرتك الذاتية جاهزة، متراجعة، ومصممة للفوز بالوظيفة.</p>
-          </div>
-        </div>
-        <button className="mt-16 bg-white text-black px-12 py-4 rounded-2xl font-black hover:scale-105 transition-all">ابدأ الآن - خطواتك أسهل مما تتخيل</button>
-      </section>
-
       {/* Services */}
-      <section id="services" className="py-24 glass">
+      <section id="services" className="py-24 relative z-10 border-y border-white/5 bg-gradient-to-b from-transparent to-purple-900/5">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-3xl md:text-4xl font-black">خدماتنا الشاملة</h2>
             <p className="text-slate-400">بنغطي كل جوانب رحلة بحثك عن وظيفة.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-slate-900/40 p-8 rounded-3xl border border-white/5 space-y-6">
+            <div className="glass p-8 rounded-3xl space-y-6">
               <h3 className="text-xl font-bold">بناء CV بالذكاء الاصطناعي</h3>
-              <p className="text-slate-400 text-sm">أداة سريعة وذكية لبناء مسودة أولية احترافية في ثواني.</p>
+              <p className="text-slate-400 text-sm leading-relaxed">أداة سريعة وذكية لبناء مسودة أولية احترافية في ثواني بناءً على خبراتك.</p>
               <button className="text-purple-400 text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all">اعرف أكتر <span>←</span></button>
             </div>
-            <div className="bg-slate-900/40 p-8 rounded-3xl border border-purple-500/20 space-y-6">
+            <div className="glass p-8 rounded-3xl border-purple-500/20 bg-purple-500/5 space-y-6">
               <h3 className="text-xl font-bold">كتابة مهنية (مراجعة بشرية)</h3>
-              <p className="text-slate-400 text-sm">خبراء HR بيكتبوا إنجازاتك بأسلوب احترافي يجذب الشركات الكبيرة.</p>
+              <p className="text-slate-400 text-sm leading-relaxed">خبراء HR بيكتبوا إنجازاتك بأسلوب احترافي يجذب الشركات الكبيرة والناشئة.</p>
               <button className="text-purple-400 text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all">اعرف أكتر <span>←</span></button>
             </div>
-            <div className="bg-slate-900/40 p-8 rounded-3xl border border-white/5 space-y-6">
+            <div className="glass p-8 rounded-3xl space-y-6">
               <h3 className="text-xl font-bold">خطاب التغطية (Cover Letter)</h3>
-              <p className="text-slate-400 text-sm">خطاب مخصص لكل وظيفة بيحكي قصتك ليه إنت الشخص المناسب.</p>
+              <p className="text-slate-400 text-sm leading-relaxed">خطاب مخصص لكل وظيفة بيحكي قصتك ليه إنت الشخص المناسب بالتحديد.</p>
               <button className="text-purple-400 text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all">اعرف أكتر <span>←</span></button>
             </div>
-            <div className="bg-slate-900/40 p-8 rounded-3xl border border-white/5 space-y-6">
+            <div className="glass p-8 rounded-3xl space-y-6">
               <h3 className="text-xl font-bold">تنسيق Portfolio/Profile</h3>
-              <p className="text-slate-400 text-sm">عرض أعمالك وسيرتك على LinkedIn بشكل يخلي الـ Recruiters يكلموك.</p>
+              <p className="text-slate-400 text-sm leading-relaxed">عرض أعمالك وسيرتك على LinkedIn بشكل يخلي الـ Recruiters يكلموك أولاً.</p>
               <button className="text-purple-400 text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all">اعرف أكتر <span>←</span></button>
             </div>
-            <div className="bg-slate-900/40 p-8 rounded-3xl border border-white/5 space-y-6">
+            <div className="glass p-8 rounded-3xl space-y-6">
               <h3 className="text-xl font-bold">التحضير للمقابلات</h3>
-              <p className="text-slate-400 text-sm">تدريبات حية على أسئلة المقابلات وكيفية الإجابة بثقة وإقناع.</p>
+              <p className="text-slate-400 text-sm leading-relaxed">تدريبات حية على أسئلة المقابلات وكيفية الإجابة بثقة وإقناع تام بالذات.</p>
               <button className="text-purple-400 text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all">اعرف أكتر <span>←</span></button>
             </div>
           </div>
@@ -226,16 +203,16 @@ const App: React.FC = () => {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-24 container mx-auto px-6">
+      <section id="pricing" className="py-24 container mx-auto px-6 relative z-10">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-3xl md:text-4xl font-black">باقات تناسب الجميع</h2>
           <p className="text-slate-400">اختر الخطة اللي تسرع وصولك لوظيفتك القادمة.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {PRICING_PLANS.map((plan) => (
-            <div key={plan.id} className={`relative glass p-10 rounded-[3rem] space-y-8 flex flex-col ${plan.isPopular ? 'border-purple-500 scale-105 shadow-2xl shadow-purple-900/20' : ''}`}>
+            <div key={plan.id} className={`relative glass p-10 rounded-[2.5rem] space-y-8 flex flex-col ${plan.isPopular ? 'border-purple-500 bg-purple-500/5 scale-105 shadow-2xl shadow-purple-900/20' : 'border-white/5'}`}>
               {plan.isPopular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-purple-600 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">الأكثر طلباً</div>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-purple-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white">الأكثر طلباً</div>
               )}
               <div className="text-center space-y-2">
                 <h3 className="text-xl font-bold">{plan.name}</h3>
@@ -249,7 +226,7 @@ const App: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <button className={`w-full py-4 rounded-2xl font-bold transition-all ${plan.isPopular ? 'bg-purple-600 hover:bg-purple-700' : 'bg-white/5 hover:bg-white/10'}`}>
+              <button className={`w-full py-4 rounded-2xl font-bold transition-all ${plan.isPopular ? 'bg-purple-600 hover:bg-purple-700 text-white' : 'bg-white/5 hover:bg-white/10'}`}>
                 اشترك الآن
               </button>
             </div>
@@ -257,38 +234,17 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 bg-white/[0.02]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-3xl md:text-4xl font-black">قالوا عننا</h2>
-            <p className="text-slate-400">قصص نجاح بدأت من تحسين سيرة ذاتية.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((t) => (
-              <div key={t.id} className="glass p-8 rounded-3xl space-y-6 italic">
-                <p className="text-slate-300 leading-relaxed">"{t.quote}"</p>
-                <div className="not-italic">
-                  <div className="font-bold">{t.author}</div>
-                  <div className="text-xs text-slate-500">{t.role}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section id="faq" className="py-24 container mx-auto px-6 max-w-4xl">
+      <section id="faq" className="py-24 container mx-auto px-6 max-w-4xl relative z-10">
         <h2 className="text-3xl md:text-4xl font-black text-center mb-16">الأسئلة الشائعة</h2>
         <div className="space-y-4">
           {FAQ_ITEMS.map((item) => (
-            <details key={item.id} className="group glass rounded-2xl overflow-hidden transition-all">
+            <details key={item.id} className="group glass rounded-2xl overflow-hidden transition-all border-white/5">
               <summary className="p-6 cursor-pointer font-bold list-none flex justify-between items-center group-open:bg-white/5">
                 {item.question}
-                <span className="transition-transform group-open:rotate-180">▼</span>
+                <span className="transition-transform group-open:rotate-180 text-purple-500">▼</span>
               </summary>
-              <div className="p-6 text-slate-400 text-sm leading-relaxed border-t border-white/5">
+              <div className="p-6 text-slate-400 text-sm leading-relaxed border-t border-white/5 bg-black/20">
                 {item.answer}
               </div>
             </details>
@@ -296,29 +252,8 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-24 container mx-auto px-6">
-        <div className="glass p-12 md:p-24 rounded-[4rem] text-center space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/20 blur-[100px] -z-10"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-600/20 blur-[100px] -z-10"></div>
-          
-          <h2 className="text-4xl md:text-6xl font-black">مستعد تبدأ صفحة جديدة <br />في حياتك المهنية؟</h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">انضم لآلاف المحترفين اللي اختصروا الطريق لوظيفة أحلامهم مع CVEEEZ.</p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-purple-600 hover:bg-purple-700 text-white px-12 py-5 rounded-2xl font-black text-xl shadow-xl transition-all hover:scale-105">
-              ابدأ الآن مجاناً
-            </button>
-            <button className="glass border-white/10 px-12 py-5 rounded-2xl font-bold text-xl hover:bg-white/5 transition-all">
-              تحدث مع خبير على WhatsApp
-            </button>
-          </div>
-          <p className="text-xs text-slate-500">لا نضمن التوظيف، ولكن نضمن أفضل تمثيل لخبراتك أمام الأنظمة والمديرين.</p>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 bg-black/40">
+      <footer className="py-12 border-t border-white/5 bg-black/40 relative z-10">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="space-y-4 text-center md:text-right">
@@ -340,9 +275,9 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-xs text-slate-600 gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[10px] text-slate-600 gap-4">
             <div>جميع الحقوق محفوظة © {new Date().getFullYear()} CVEEEZ</div>
-            <div className="font-sans italic">CVEEEZ: Your Professional Bridge to Global Careers.</div>
+            <div className="font-sans italic opacity-50">CVEEEZ: Your Professional Bridge to Global Careers.</div>
           </div>
         </div>
       </footer>

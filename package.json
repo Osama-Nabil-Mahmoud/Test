@@ -9,9 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "three": "0.173.0",
+    "three-stdlib": "2.35.14",
     "@react-three/fiber": "9.0.0",
     "@react-three/drei": "10.0.0"
   },
